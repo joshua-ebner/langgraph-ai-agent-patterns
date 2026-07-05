@@ -1,6 +1,6 @@
 # LangGraph AI Agent Patterns
 
-A pattern library for production-grade LangGraph agents — typed state, reliable tool pipelines, validated structured outputs, human approval gates, and pytest-first testing. Each module is a minimal but realistic workflow you can run and inspect in LangSmith.
+A pattern library for production-oriented LangGraph agents — typed state, reliable tool pipelines, validated structured outputs, human approval gates, and pytest-first testing. Each module is a minimal but realistic workflow you can run and inspect in LangSmith.
 
 ## Focus areas
 
