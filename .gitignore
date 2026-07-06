@@ -17,3 +17,7 @@ __pycache__/
 # Editor
 .vscode/
 .idea/
+
+# UI
+ui/web/node_modules/
+ui/web/dist/

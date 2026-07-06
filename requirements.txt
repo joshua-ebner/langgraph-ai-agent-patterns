@@ -11,3 +11,7 @@ httpx==0.28.1
 
 pytest==9.1.1
 ruff==0.15.20
+
+# Optional UI dependencies (also: pip install -e ".[ui]")
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
