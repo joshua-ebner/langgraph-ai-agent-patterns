@@ -103,7 +103,3 @@ Pattern modules live under `src/agent_patterns/patterns/pNN_*` (Python package n
 ## Capstone
 
 Not started. See [capstone/README.md](capstone/README.md) for how future work will compose these patterns.
-
-## Optional web UI
-
-Implemented. See the **Web UI** section above and [docs/phase3-ui.md](docs/phase3-ui.md).
