@@ -5,6 +5,7 @@ import HitlReview from "../components/HitlReview";
 import PatternForm from "../components/PatternForm";
 import ResultView from "../components/ResultView";
 import type { PatternInfo, RunResponse } from "../types";
+import { patternDisplayLabel } from "../utils/patternLabel";
 
 export default function PatternPage() {
   const { patternId = "" } = useParams();
@@ -48,7 +49,7 @@ export default function PatternPage() {
         Back to patterns
       </Link>
       <h1>
-        {pattern.id}: {pattern.name}
+        {patternDisplayLabel(pattern.id)} — {pattern.name}
       </h1>
       <p className="subtitle">{pattern.description}</p>
 
