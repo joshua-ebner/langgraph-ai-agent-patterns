@@ -1,36 +1,36 @@
-# Phase 3 — Optional Web UI (Deferred)
+# Web UI — Pattern Picker
 
-This document describes a future UI layer. **No UI code ships in the initial pattern library.**
+The web UI wraps all five LangGraph pattern modules with a FastAPI backend and Vite/React frontend.
 
-## Goal
-
-Wrap existing LangGraph workflows (especially Module 04 human-in-the-loop) with a thin web interface suitable for portfolio demos — without changing graph logic.
-
-## Proposed layout
+## Layout
 
 ```
 ui/
 ├── api/
-│   └── main.py       # FastAPI: POST /run, POST /resume
+│   ├── main.py       # FastAPI app, CORS, optional static file serving
+│   ├── registry.py   # Pattern metadata for picker + forms
+│   ├── runner.py     # Graph invoke/resume + state serialization
+│   └── schemas.py    # Pydantic API models
 └── web/
-    └── ...           # Minimal frontend (Vite/React or HTMX)
+    └── src/          # React pattern picker, forms, HITL review panel
 ```
 
-## API sketch
+## Endpoints
 
-| Endpoint | Purpose |
-|----------|---------|
-| `POST /run` | Start a graph with `{ pattern, thread_id, input }` |
-| `POST /resume` | Resume after interrupt with `{ thread_id, review_status, edits? }` |
-| `GET /state/{thread_id}` | Fetch checkpoint state for review UI |
+| Method | Path | Purpose |
+|--------|------|---------|
+| `GET` | `/api/patterns` | List patterns (id, name, description, fields) |
+| `GET` | `/api/patterns/{id}` | Pattern metadata |
+| `POST` | `/api/patterns/{id}/run` | Run a pattern |
+| `GET` | `/api/patterns/p04/state/{thread_id}` | Fetch paused HITL checkpoint |
+| `POST` | `/api/patterns/p04/resume` | Resume HITL with approve/reject/edit |
 
-## Implementation notes
+## Design notes
 
-- Import compiled graphs from `agent_patterns.patterns.p04_human_in_the_loop.graph`.
-- Reuse `MemorySaver` or `SqliteSaver` with stable `thread_id` values.
-- Keep business logic in `src/`; UI only orchestrates invoke/resume and renders `final_brief`.
-- Module 04 CLI (`scripts/run_04_hitl.py`) is the reference interaction model.
+- Graph logic stays in `src/agent_patterns/patterns/` — the API only orchestrates invoke/resume.
+- Module 04 uses a shared in-process `MemorySaver` so `thread_id` resume works across HTTP requests.
+- CLI scripts in `scripts/` remain the terminal-first entry point.
 
-## When to build
+## Run
 
-After Module 04 CLI works end-to-end and unit tests pass. The HITL module benefits most from approve/reject/edit buttons in a browser.
+See the **Web UI** section in [README.md](../README.md).

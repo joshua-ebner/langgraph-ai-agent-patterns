@@ -51,6 +51,37 @@ Live API smoke tests (requires keys):
 pytest tests/ -m integration -v
 ```
 
+## Web UI
+
+Run all five patterns from a React pattern picker backed by FastAPI.
+
+```bash
+# Terminal 1 — API
+source .venv/bin/activate
+pip install -e ".[ui,dev]"
+./scripts/run_api.sh
+
+# Terminal 2 — React dev server
+cd ui/web
+npm install
+npm run dev
+# open http://localhost:5173
+```
+
+The Vite dev server proxies `/api` to `http://127.0.0.1:8000`. Requires the same `.env` API keys as the CLI scripts.
+
+On macOS, editable installs may not add `src/` to `sys.path` (hidden `.pth` files). `run_api.sh` sets `PYTHONPATH=src:.` automatically.
+
+For a static build served by FastAPI:
+
+```bash
+cd ui/web && npm run build
+PYTHONPATH=src:. python -m uvicorn ui.api.main:app --port 8000
+# open http://localhost:8000
+```
+
+See [docs/phase3-ui.md](docs/phase3-ui.md) for architecture notes.
+
 ## LangSmith
 
 When `LANGSMITH_API_KEY` is set, CLI scripts enable tracing automatically. Inspect runs at [smith.langchain.com](https://smith.langchain.com/) under project `langgraph-ai-agent-patterns`.
@@ -60,9 +91,11 @@ When `LANGSMITH_API_KEY` is set, CLI scripts enable tracing automatically. Inspe
 ```
 src/agent_patterns/          # Shared config, LLM factory, patterns
 scripts/                       # Runnable CLI demos
+ui/api/                        # FastAPI backend
+ui/web/                        # Vite + React frontend
 tests/                         # Unit + integration tests
 capstone/                      # Future integrated demo (placeholder)
-docs/phase3-ui.md              # Deferred web UI plan
+docs/phase3-ui.md              # Web UI architecture notes
 ```
 
 Pattern modules live under `src/agent_patterns/patterns/pNN_*` (Python package names use the `pNN_` prefix because module names cannot start with a digit).
@@ -73,4 +106,4 @@ Not started. See [capstone/README.md](capstone/README.md) for how future work wi
 
 ## Optional web UI
 
-See [docs/phase3-ui.md](docs/phase3-ui.md) for a deferred FastAPI + frontend plan wrapping Module 04.
+Implemented. See the **Web UI** section above and [docs/phase3-ui.md](docs/phase3-ui.md).
